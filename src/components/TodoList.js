@@ -40,7 +40,7 @@ class TodoList extends React.Component {
     ));
 
     return (
-      <div>
+      <div className="todoList">
         <h2>Todo</h2>
         {items}
         <Input onSubmit={this.addTask} />

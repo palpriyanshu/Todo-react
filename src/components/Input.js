@@ -26,6 +26,7 @@ class Input extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <input
+          className="inputBox"
           autoFocus
           type="text"
           onChange={this.handleChange}
