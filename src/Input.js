@@ -1,14 +1,36 @@
 import React from 'react';
 
-const Input = (props) => (
-  <form onSubmit={props.onSubmit}>
-    <input
-      autoFocus
-      type="text"
-      onChange={({ target }) => props.onChange(target.value)}
-      value={props.value}
-    />
-  </form>
-);
+class Input extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { value: '' };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    const value = e.target.value;
+    this.setState({ value });
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    this.props.onSubmit(this.state.value);
+    this.setState({ value: '' });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <input
+          autoFocus
+          type="text"
+          onChange={this.handleChange}
+          value={this.state.value}
+        />
+      </form>
+    );
+  }
+}
 
 export default Input;

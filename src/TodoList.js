@@ -5,8 +5,7 @@ import Input from './Input.js';
 class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { todoList: [], value: '' };
-    this.handleChange = this.handleChange.bind(this);
+    this.state = { todoList: [] };
     this.handleClick = this.handleClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -21,16 +20,12 @@ class TodoList extends React.Component {
     });
   }
 
-  handleChange(value) {
-    this.setState({ value });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
+  handleSubmit(value) {
+    console.log(value, 'value');
     this.setState((state) => {
       let todoList = state.todoList.slice();
-      todoList.push({ item: state.value, hasDone: false });
-      return { todoList: todoList, value: '' };
+      todoList.push({ item: value, hasDone: false });
+      return { todoList: todoList };
     });
   }
 
@@ -49,11 +44,7 @@ class TodoList extends React.Component {
       <div>
         <h2>Todo</h2>
         {items}
-        <Input
-          onSubmit={this.handleSubmit}
-          onChange={this.handleChange}
-          value={this.state.value}
-        />
+        <Input onSubmit={this.handleSubmit} />
       </div>
     );
   }
