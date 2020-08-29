@@ -1,23 +1,6 @@
 import React from 'react';
-
-const Todo = (props) => {
-  const className = props.isDone ? 'todo done' : 'todo';
-  return (
-    <div className={className} onClick={() => props.onClick(props.id)}>
-      {props.item}
-    </div>
-  );
-};
-
-const Input = (props) => (
-  <form onSubmit={props.onSubmit}>
-    <input
-      type="text"
-      onChange={({ target }) => props.onChange(target.value)}
-      value={props.value}
-    />
-  </form>
-);
+import Todo from './Todo.js';
+import Input from './Input.js';
 
 class TodoList extends React.Component {
   constructor(props) {
