@@ -15,7 +15,7 @@ class TodoList extends React.Component {
     this.setState((state) => {
       let todoList = state.todoList.slice();
       const currentTodo = Object.assign({}, todoList[id]);
-      currentTodo.isDone = !currentTodo.isDone;
+      currentTodo.hasDone = !currentTodo.hasDone;
       todoList[id] = currentTodo;
       return { todoList };
     });
@@ -29,18 +29,18 @@ class TodoList extends React.Component {
     event.preventDefault();
     this.setState((state) => {
       let todoList = state.todoList.slice();
-      todoList.push({ item: state.value, isDone: false });
+      todoList.push({ item: state.value, hasDone: false });
       return { todoList: todoList, value: '' };
     });
   }
 
   render() {
-    const items = this.state.todoList.map(({ item, isDone }, id) => (
+    const items = this.state.todoList.map(({ item, hasDone }, id) => (
       <Todo
         item={item}
         id={id}
         onClick={this.handleClick}
-        isDone={isDone}
+        hasDone={hasDone}
         key={id}
       />
     ));

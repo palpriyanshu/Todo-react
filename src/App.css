@@ -3,7 +3,9 @@
   height: 20px;
   margin: 10px;
   padding-left: 10px;
+  cursor: pointer;
 }
+
 .todo {
   border-left: 5px solid lightBlue;
 }
