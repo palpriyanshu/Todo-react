@@ -15,8 +15,11 @@ class Input extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.value);
-    this.setState({ value: '' });
+    const value = this.state.value;
+    if (value) {
+      this.props.onSubmit(value);
+      this.setState({ value: '' });
+    }
   }
 
   render() {
