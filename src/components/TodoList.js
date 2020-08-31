@@ -13,20 +13,18 @@ class TodoList extends React.Component {
   updateTaskStatus(taskId) {
     this.setState((state) => {
       let todoList = state.todoList.slice();
-      const task = Object.assign({}, todoList[taskId]);
-      let isDone = false;
-      let isInProgress = true;
-      if (task.isInProgress) {
-        isDone = true;
-        isInProgress = false;
+      const todo = Object.assign({}, todoList[taskId]);
+      let newTodo = { task: todo.task, isInProgress: true, isDone: false };
+
+      if (todo.isInProgress) {
+        newTodo = { task: todo.task, isInProgress: false, isDone: true };
       }
-      if (task.isDone) {
-        isDone = true;
-        isInProgress = false;
+
+      if (todo.isDone) {
+        newTodo.isDone = false;
       }
-      task.isDone = isDone;
-      task.isInProgress = isInProgress;
-      todoList[taskId] = task;
+
+      todoList[taskId] = newTodo;
       return { todoList };
     });
   }
