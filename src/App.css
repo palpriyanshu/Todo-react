@@ -5,11 +5,11 @@
   cursor: pointer;
 }
 
-.todo {
+.due {
   border-left: 5px solid lightBlue;
 }
 
-.inProgress {
+.doing {
   border-left: 5px solid orange;
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import Todo from './Todo.js';
 import Input from './Input.js';
+import { getDefaultStatus, getNextStatus } from './todoStates';
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -14,42 +15,30 @@ class TodoList extends React.Component {
     this.setState((state) => {
       let todoList = state.todoList.slice();
       const todo = Object.assign({}, todoList[taskId]);
-      let newTodo = { task: todo.task, isInProgress: true, isDone: false };
-
-      if (todo.isInProgress) {
-        newTodo = { task: todo.task, isInProgress: false, isDone: true };
-      }
-
-      if (todo.isDone) {
-        newTodo.isDone = false;
-      }
-
-      todoList[taskId] = newTodo;
+      todo.status = getNextStatus(todo.status);
+      todoList[taskId] = todo;
       return { todoList };
     });
   }
 
   addTask(task) {
     this.setState((state) => {
-      let todoList = state.todoList.slice();
-      todoList.push({ task, isInProgress: false, isDone: false });
+      const todoList = state.todoList.slice();
+      todoList.push({ task, status: getDefaultStatus() });
       return { todoList };
     });
   }
 
   render() {
-    const items = this.state.todoList.map(
-      ({ task, isInProgress, isDone }, id) => (
-        <Todo
-          task={task}
-          id={id}
-          onClick={this.updateTaskStatus}
-          isDone={isDone}
-          isInProgress={isInProgress}
-          key={id}
-        />
-      )
-    );
+    const items = this.state.todoList.map(({ task, status }, id) => (
+      <Todo
+        task={task}
+        id={id}
+        onClick={this.updateTaskStatus}
+        status={status}
+        key={id}
+      />
+    ));
 
     return (
       <div>
