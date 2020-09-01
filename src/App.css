@@ -1,23 +1,11 @@
 .task {
   font-size: 20px;
-  cursor: text;
 }
 
 .header {
-  border: none;
   font-size: 30px;
   font-weight: 800;
   margin: 10px;
-}
-
-.header:hover {
-  border: 2px solid #888;
-  cursor: pointer;
-}
-
-.header:mouseover {
-  border: none;
-  pointer-events: none;
 }
 
 .todoBox {
@@ -28,14 +16,14 @@
 }
 
 .due {
-  border-left: 5px solid lightBlue;
+  border-left: 20px solid lightBlue;
 }
 
 .doing {
-  border-left: 5px solid orange;
+  border-left: 20px solid orange;
 }
 
 .done {
-  border-left: 5px solid mediumseagreen;
+  border-left: 20px solid mediumseagreen;
   text-decoration: line-through;
 }

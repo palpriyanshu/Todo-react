@@ -16,9 +16,10 @@ class Input extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     const value = this.state.value;
+    const defaultValue = this.props.defaultValue;
     if (value) {
       this.props.onSubmit(value);
-      this.setState({ value: this.props.defaultValue ? value : '' });
+      this.setState({ value: defaultValue ? value : defaultValue });
     }
   }
 
@@ -27,7 +28,7 @@ class Input extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <input
           className={this.props.className}
-          // autoFocus
+          autoFocus
           type="text"
           onChange={this.handleChange}
           value={this.state.value}

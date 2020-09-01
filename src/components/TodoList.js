@@ -1,4 +1,5 @@
 import React from 'react';
+import Header from './Header';
 import Todo from './Todo.js';
 import Input from './Input.js';
 import { getDefaultStatus, getNextStatus } from './todoStates';
@@ -12,8 +13,8 @@ class TodoList extends React.Component {
     this.addTask = this.addTask.bind(this);
   }
 
-  updateHeader(value) {
-    this.setState({ header: value });
+  updateHeader(header) {
+    this.setState({ header });
   }
 
   updateTaskStatus(taskId) {
@@ -47,7 +48,7 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <Input
+        <Header
           onSubmit={this.updateHeader}
           defaultValue={this.state.header}
           className="header"
