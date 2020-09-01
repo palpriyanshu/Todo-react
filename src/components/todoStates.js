@@ -14,4 +14,9 @@ const getNextStatus = function (currentStatus) {
 
 const getDefaultStatus = () => DUE;
 
-module.exports = { getNextStatus, getDefaultStatus };
+const generateId = function () {
+  let count = 0;
+  return () => count++;
+};
+
+module.exports = { getNextStatus, getDefaultStatus, generateId };

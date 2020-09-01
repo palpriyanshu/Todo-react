@@ -2,7 +2,9 @@ import React from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
-import { getDefaultStatus, getNextStatus } from './todoStates';
+import { getDefaultStatus, getNextStatus, generateId } from './todoStates';
+
+const getId = generateId();
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -28,15 +30,16 @@ class TodoList extends React.Component {
   }
 
   addTask(task) {
+    const id = getId();
     this.setState((state) => {
-      const todo = { task, status: getDefaultStatus() };
+      const todo = { task, status: getDefaultStatus(), id };
       return { todoList: state.todoList.concat(todo) };
     });
   }
 
   render() {
     const { todoList, heading } = this.state;
-    const items = todoList.map(({ task, status }, id) => (
+    const items = todoList.map(({ task, status, id }) => (
       <Todo
         task={task}
         status={status}
