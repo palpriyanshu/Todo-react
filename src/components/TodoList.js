@@ -28,10 +28,9 @@ class TodoList extends React.Component {
   }
 
   addTask(task) {
-    this.setState((state) => {
-      const todoList = state.todoList.slice();
-      todoList.push({ task, status: getDefaultStatus() });
-      return { todoList };
+    this.setState(({ todoList }) => {
+      const list = todoList.concat({ task, status: getDefaultStatus() });
+      return { todoList: list };
     });
   }
 
@@ -50,11 +49,11 @@ class TodoList extends React.Component {
       <div>
         <Header
           onSubmit={this.updateHeader}
-          defaultValue={this.state.header}
+          value={this.state.header}
           className="header"
         />
         {items}
-        <Input onSubmit={this.addTask} defaultValue="" className="task" />
+        <Input onSubmit={this.addTask} className="task" />
       </div>
     );
   }

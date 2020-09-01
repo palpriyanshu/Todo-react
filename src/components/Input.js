@@ -3,7 +3,7 @@ import React from 'react';
 class Input extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: props.defaultValue };
+    this.state = { value: props.value };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -15,10 +15,10 @@ class Input extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const value = this.state.value;
+    const value = this.state.value.trim();
     if (value) {
       this.props.onSubmit(value);
-      this.setState({ value: this.props.defaultValue });
+      this.setState({ value: this.props.value });
     }
   }
 
@@ -36,5 +36,9 @@ class Input extends React.Component {
     );
   }
 }
+
+Input.defaultProps = {
+  value: '',
+};
 
 export default Input;

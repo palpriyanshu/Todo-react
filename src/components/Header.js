@@ -19,20 +19,17 @@ class Header extends React.Component {
   }
 
   render() {
-    const { defaultValue, className } = this.props;
+    const { value, className } = this.props;
+
     if (this.state.editable) {
       return (
-        <Input
-          onSubmit={this.onSubmit}
-          defaultValue={defaultValue}
-          className={className}
-        />
+        <Input onSubmit={this.onSubmit} value={value} className={className} />
       );
     }
 
     return (
       <h1 style={{ cursor: 'pointer' }} onClick={this.toggleEditable}>
-        {defaultValue}
+        {value}
       </h1>
     );
   }
