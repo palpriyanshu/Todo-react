@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
 import { getDefaultStatus, getNextStatus } from './todoStates';
@@ -7,14 +7,14 @@ import { getDefaultStatus, getNextStatus } from './todoStates';
 class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { header: 'Todo', todoList: [] };
-    this.updateHeader = this.updateHeader.bind(this);
+    this.state = { heading: 'Todo', todoList: [] };
+    this.updateHeading = this.updateHeading.bind(this);
     this.updateTaskStatus = this.updateTaskStatus.bind(this);
     this.addTask = this.addTask.bind(this);
   }
 
-  updateHeader(header) {
-    this.setState({ header });
+  updateHeading(heading) {
+    this.setState({ heading });
   }
 
   updateTaskStatus(taskId) {
@@ -38,19 +38,19 @@ class TodoList extends React.Component {
     const items = this.state.todoList.map(({ task, status }, id) => (
       <Todo
         task={task}
-        id={id}
-        onClick={this.updateTaskStatus}
         status={status}
+        id={id}
+        updateTaskStatus={this.updateTaskStatus}
         key={id}
       />
     ));
 
     return (
       <div>
-        <Header
-          onSubmit={this.updateHeader}
-          value={this.state.header}
-          className="header"
+        <Heading
+          updateHeading={this.updateHeading}
+          value={this.state.heading}
+          className="heading"
         />
         {items}
         <Input onSubmit={this.addTask} className="task" />

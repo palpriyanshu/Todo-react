@@ -1,12 +1,9 @@
 import React from 'react';
 
-const Todo = (props) => {
+const Todo = ({ status, task, id, updateTaskStatus }) => {
   return (
-    <div
-      className={`todoBox ${props.status}`}
-      onClick={() => props.onClick(props.id)}
-    >
-      {props.task}
+    <div className={`todoBox ${status}`} onClick={() => updateTaskStatus(id)}>
+      {task}
     </div>
   );
 };
