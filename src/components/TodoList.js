@@ -28,9 +28,9 @@ class TodoList extends React.Component {
   }
 
   addTask(task) {
-    this.setState(({ todoList }) => {
-      const list = todoList.concat({ task, status: getDefaultStatus() });
-      return { todoList: list };
+    this.setState((state) => {
+      const todo = { task, status: getDefaultStatus() };
+      return { todoList: state.todoList.concat(todo) };
     });
   }
 

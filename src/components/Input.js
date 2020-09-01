@@ -8,9 +8,8 @@ class Input extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(e) {
-    const value = e.target.value;
-    this.setState({ value });
+  handleChange({ target }) {
+    this.setState({ value: target.value });
   }
 
   handleSubmit(event) {

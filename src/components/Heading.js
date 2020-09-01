@@ -4,13 +4,13 @@ import Input from './Input';
 class Heading extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { editable: false };
+    this.state = { isEditable: false };
     this.toggleEditable = this.toggleEditable.bind(this);
     this.submitHeading = this.submitHeading.bind(this);
   }
 
   toggleEditable() {
-    this.setState((state) => ({ editable: !state.editable }));
+    this.setState((state) => ({ isEditable: !state.isEditable }));
   }
 
   submitHeading(heading) {
@@ -20,19 +20,18 @@ class Heading extends React.Component {
 
   render() {
     const className = 'heading';
-    if (this.state.editable) {
+    const { submitHeading, toggleEditable, state, props } = this;
+    const { value } = props;
+
+    if (state.isEditable) {
       return (
-        <Input
-          onSubmit={this.submitHeading}
-          value={this.props.value}
-          className={className}
-        />
+        <Input onSubmit={submitHeading} value={value} className={className} />
       );
     }
 
     return (
-      <div className={`${className} pointer`} onClick={this.toggleEditable}>
-        {this.props.value}
+      <div className={`${className} pointer`} onClick={toggleEditable}>
+        {value}
       </div>
     );
   }
