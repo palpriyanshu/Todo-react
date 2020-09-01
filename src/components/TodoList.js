@@ -3,7 +3,6 @@ import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
 import { getDefaultStatus, getNextStatus, generateId } from './todoStates';
-
 const getId = generateId();
 
 class TodoList extends React.Component {
@@ -13,6 +12,17 @@ class TodoList extends React.Component {
     this.updateHeading = this.updateHeading.bind(this);
     this.updateTaskStatus = this.updateTaskStatus.bind(this);
     this.addTask = this.addTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+  }
+
+  deleteTask(id) {
+    this.setState((state) => {
+      return {
+        todoList: state.todoList
+          .slice(0, id)
+          .concat(state.todoList.slice(id + 1)),
+      };
+    });
   }
 
   updateHeading(heading) {
@@ -45,6 +55,7 @@ class TodoList extends React.Component {
         status={status}
         id={id}
         updateTaskStatus={this.updateTaskStatus}
+        deleteTask={this.deleteTask}
         key={id}
       />
     ));
