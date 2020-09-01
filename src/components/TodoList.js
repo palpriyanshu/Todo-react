@@ -35,7 +35,8 @@ class TodoList extends React.Component {
   }
 
   render() {
-    const items = this.state.todoList.map(({ task, status }, id) => (
+    const { todoList, heading } = this.state;
+    const items = todoList.map(({ task, status }, id) => (
       <Todo
         task={task}
         status={status}
@@ -47,11 +48,7 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <Heading
-          updateHeading={this.updateHeading}
-          value={this.state.heading}
-          className="heading"
-        />
+        <Heading updateHeading={this.updateHeading} value={heading} />
         {items}
         <Input onSubmit={this.addTask} className="task" />
       </div>

@@ -19,22 +19,21 @@ class Heading extends React.Component {
   }
 
   render() {
-    const { value, className } = this.props;
-
+    const className = 'heading';
     if (this.state.editable) {
       return (
         <Input
           onSubmit={this.submitHeading}
-          value={value}
+          value={this.props.value}
           className={className}
         />
       );
     }
 
     return (
-      <h1 style={{ cursor: 'pointer' }} onClick={this.toggleEditable}>
-        {value}
-      </h1>
+      <div className={`${className} pointer`} onClick={this.toggleEditable}>
+        {this.props.value}
+      </div>
     );
   }
 }

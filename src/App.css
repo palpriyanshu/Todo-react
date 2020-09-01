@@ -1,11 +1,16 @@
 .task {
   font-size: 20px;
+  margin: 10px;
 }
 
 .heading {
   font-size: 30px;
   font-weight: 800;
   margin: 10px;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .todoBox {
