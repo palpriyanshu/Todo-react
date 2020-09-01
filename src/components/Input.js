@@ -3,7 +3,7 @@ import React from 'react';
 class Input extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { value: '' };
+    this.state = { value: props.defaultValue };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -18,7 +18,7 @@ class Input extends React.Component {
     const value = this.state.value;
     if (value) {
       this.props.onSubmit(value);
-      this.setState({ value: '' });
+      this.setState({ value: this.props.defaultValue ? value : '' });
     }
   }
 
@@ -26,7 +26,8 @@ class Input extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <input
-          autoFocus
+          className={this.props.className}
+          // autoFocus
           type="text"
           onChange={this.handleChange}
           value={this.state.value}

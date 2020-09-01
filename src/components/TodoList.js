@@ -6,9 +6,14 @@ import { getDefaultStatus, getNextStatus } from './todoStates';
 class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { todoList: [] };
+    this.state = { header: 'Todo', todoList: [] };
+    this.updateHeader = this.updateHeader.bind(this);
     this.updateTaskStatus = this.updateTaskStatus.bind(this);
     this.addTask = this.addTask.bind(this);
+  }
+
+  updateHeader(value) {
+    this.setState({ header: value });
   }
 
   updateTaskStatus(taskId) {
@@ -42,9 +47,13 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <h2>Todo</h2>
+        <Input
+          onSubmit={this.updateHeader}
+          defaultValue={this.state.header}
+          className="header"
+        />
         {items}
-        <Input onSubmit={this.addTask} />
+        <Input onSubmit={this.addTask} defaultValue="" className="task" />
       </div>
     );
   }
