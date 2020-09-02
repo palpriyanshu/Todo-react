@@ -3,12 +3,11 @@ import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
 import { getDefaultStatus, getNextStatus } from '../todoStates';
-import { getId } from '../idGenerator';
 
 class TodoList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { heading: 'Todo', todoList: [] };
+    this.state = { heading: 'Todo', todoList: [], lastId: 0 };
     this.updateHeading = this.updateHeading.bind(this);
     this.updateTaskStatus = this.updateTaskStatus.bind(this);
     this.addTask = this.addTask.bind(this);
@@ -35,10 +34,12 @@ class TodoList extends React.Component {
   }
 
   addTask(task) {
-    const id = getId();
     this.setState((state) => {
-      const todo = { task, status: getDefaultStatus(), id };
-      return { todoList: state.todoList.concat(todo) };
+      const todo = { task, status: getDefaultStatus(), id: state.lastId };
+      return {
+        todoList: state.todoList.concat(todo),
+        lastId: state.lastId + 1,
+      };
     });
   }
 
