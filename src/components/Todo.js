@@ -1,4 +1,5 @@
 import React from 'react';
+import Delete from './Delete';
 
 const Todo = ({ todo, updateTaskStatus, deleteTask }) => {
   const { id, task, status } = todo;
@@ -7,9 +8,7 @@ const Todo = ({ todo, updateTaskStatus, deleteTask }) => {
       <div className={`todo ${status}`} onClick={() => updateTaskStatus(id)}>
         {task}
       </div>
-      <div className="delete" onClick={() => deleteTask(id)}>
-        x
-      </div>
+      <Delete onDelete={deleteTask} id={id} />
     </div>
   );
 };
