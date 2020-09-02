@@ -19,4 +19,4 @@ const generateId = function () {
   return () => count++;
 };
 
-module.exports = { getNextStatus, getDefaultStatus, generateId };
+module.exports = { getNextStatus, getDefaultStatus, getId: generateId() };

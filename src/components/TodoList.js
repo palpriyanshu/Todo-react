@@ -2,8 +2,7 @@ import React from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
-import { getDefaultStatus, getNextStatus, generateId } from './todoStates';
-const getId = generateId();
+import { getDefaultStatus, getNextStatus, getId } from './todoStates';
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -17,11 +16,7 @@ class TodoList extends React.Component {
 
   deleteTask(id) {
     this.setState((state) => {
-      return {
-        todoList: state.todoList
-          .slice(0, id)
-          .concat(state.todoList.slice(id + 1)),
-      };
+      return { todoList: state.todoList.filter((todo) => todo.id !== id) };
     });
   }
 

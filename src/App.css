@@ -13,12 +13,11 @@
   cursor: pointer;
 }
 
-.todoBox {
+.todo {
   min-width: 150px;
   height: 20px;
   margin: 10px;
   padding-left: 10px;
-  cursor: pointer;
 }
 
 .due {
@@ -34,6 +33,16 @@
   text-decoration: line-through;
 }
 
+.todoBox {
+  display: flex;
+  cursor: pointer;
+}
+
 .delete {
   margin: auto 0;
+  display: none;
+}
+
+.todoBox:hover .delete {
+  display: block;
 }
