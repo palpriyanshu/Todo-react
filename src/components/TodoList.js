@@ -49,14 +49,12 @@ class TodoList extends React.Component {
 
   render() {
     const { todoList, heading } = this.state;
-    const items = todoList.map(({ task, status, id }) => (
+    const items = todoList.map((todo) => (
       <Todo
-        task={task}
-        status={status}
-        id={id}
+        todo={todo}
         updateTaskStatus={this.updateTaskStatus}
         deleteTask={this.deleteTask}
-        key={id}
+        key={todo.id}
       />
     ));
 

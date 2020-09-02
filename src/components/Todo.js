@@ -1,7 +1,8 @@
 import React from 'react';
 import Delete from './Delete';
 
-const Todo = ({ status, task, id, updateTaskStatus, deleteTask }) => {
+const Todo = ({ todo, updateTaskStatus, deleteTask }) => {
+  const { id, task, status } = todo;
   return (
     <div style={{ display: 'flex' }}>
       <div className={`todoBox ${status}`} onClick={() => updateTaskStatus(id)}>

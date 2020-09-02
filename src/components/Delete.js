@@ -2,7 +2,7 @@ import React from 'react';
 
 const Delete = ({ id, deleteTask, symbol }) => {
   return (
-    <div className="pointer centre" onClick={() => deleteTask(id)}>
+    <div className="pointer delete" onClick={() => deleteTask(id)}>
       {symbol}
     </div>
   );
