@@ -2,7 +2,8 @@ import React from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
-import { getDefaultStatus, getNextStatus, getId } from './todoStates';
+import { getDefaultStatus, getNextStatus } from '../todoStates';
+import { getId } from '../idGenerator';
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -27,9 +28,8 @@ class TodoList extends React.Component {
   updateTaskStatus(taskId) {
     this.setState((state) => {
       let todoList = state.todoList.slice();
-      const todo = Object.assign({}, todoList[taskId]);
-      todo.status = getNextStatus(todo.status);
-      todoList[taskId] = todo;
+      const { task, id, status } = todoList[taskId];
+      todoList[taskId] = { task, id, status: getNextStatus(status) };
       return { todoList };
     });
   }
