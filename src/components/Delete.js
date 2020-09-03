@@ -8,4 +8,8 @@ const Delete = ({ id, onDelete }) => {
   );
 };
 
+Delete.defaultProps = {
+  id: null,
+};
+
 export default Delete;
