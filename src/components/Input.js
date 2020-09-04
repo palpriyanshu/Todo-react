@@ -17,7 +17,7 @@ class Input extends React.Component {
     const value = this.state.value.trim();
     if (value) {
       this.props.onSubmit(value);
-      this.setState({ value: this.props.value });
+      this.setState((state, props) => ({ value: props.value }));
     }
   }
 

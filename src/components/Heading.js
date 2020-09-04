@@ -1,40 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from './Input';
 
-class Heading extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isEditable: false };
-    this.toggleEditable = this.toggleEditable.bind(this);
-    this.submitHeading = this.submitHeading.bind(this);
+const Heading = (props) => {
+  const [state, onStateChange] = useState({ isEditable: false });
+
+  const toggleEditable = () => {
+    onStateChange({ isEditable: !state.isEditable });
+  };
+
+  const submitHeading = (heading) => {
+    toggleEditable();
+    props.updateHeading(heading);
+  };
+
+  const { value } = props;
+  if (state.isEditable) {
+    return <Input onSubmit={submitHeading} value={value} className="heading" />;
   }
 
-  toggleEditable() {
-    this.setState((state) => ({ isEditable: !state.isEditable }));
-  }
-
-  submitHeading(heading) {
-    this.toggleEditable();
-    this.props.updateHeading(heading);
-  }
-
-  render() {
-    const className = 'heading';
-    const { submitHeading, toggleEditable, state, props } = this;
-    const { value } = props;
-
-    if (state.isEditable) {
-      return (
-        <Input onSubmit={submitHeading} value={value} className={className} />
-      );
-    }
-
-    return (
-      <div className={`${className} pointer`} onClick={toggleEditable}>
-        {value}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="heading pointer" onClick={toggleEditable}>
+      {value}
+    </div>
+  );
+};
 
 export default Heading;
