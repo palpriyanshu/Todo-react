@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
@@ -7,72 +7,58 @@ import { getDefaultStatus, getNextStatus } from '../todoStates';
 
 const DEFAULT_HEADING = 'Todo';
 
-class TodoList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { heading: DEFAULT_HEADING, todoList: [], lastId: 0 };
-    this.updateHeading = this.updateHeading.bind(this);
-    this.updateTaskStatus = this.updateTaskStatus.bind(this);
-    this.addTask = this.addTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
-    this.deleteTodoList = this.deleteTodoList.bind(this);
-  }
+const TodoList = (props) => {
+  const [heading, setHeading] = useState(DEFAULT_HEADING);
+  const [todoList, setTodoList] = useState([]);
+  const [lastId, setLastId] = useState(0);
 
-  deleteTodoList() {
-    this.setState({ heading: DEFAULT_HEADING, todoList: [], lastId: 0 });
-  }
+  const deleteTodoList = () => {
+    setTodoList([]);
+    setHeading(DEFAULT_HEADING);
+    setLastId(0);
+  };
 
-  deleteTask(id) {
-    this.setState((state) => {
-      return { todoList: state.todoList.filter((todo) => todo.id !== id) };
-    });
-  }
+  const deleteTask = (id) => {
+    const newList = todoList.filter((todo) => todo.id !== id);
+    setTodoList(newList);
+  };
 
-  updateHeading(heading) {
-    this.setState({ heading });
-  }
+  const updateHeading = (heading) => {
+    setHeading(heading);
+  };
 
-  updateTaskStatus(taskId) {
-    this.setState((state) => {
-      let todoList = state.todoList.slice();
-      const { task, id, status } = todoList[taskId];
-      todoList[taskId] = { task, id, status: getNextStatus(status) };
-      return { todoList };
-    });
-  }
+  const updateTaskStatus = (taskId) => {
+    const newTodoList = todoList.slice();
+    const { task, id, status } = todoList[taskId];
+    newTodoList[taskId] = { task, id, status: getNextStatus(status) };
+    setTodoList(newTodoList);
+  };
 
-  addTask(task) {
-    this.setState((state) => {
-      const todo = { task, status: getDefaultStatus(), id: state.lastId };
-      return {
-        todoList: state.todoList.concat(todo),
-        lastId: state.lastId + 1,
-      };
-    });
-  }
+  const addTask = (task) => {
+    const todo = { task, status: getDefaultStatus(), id: lastId };
+    setTodoList([...todoList, todo]);
+    setLastId(lastId + 1);
+  };
 
-  render() {
-    const { todoList, heading } = this.state;
-    const items = todoList.map((todo) => (
-      <Todo
-        todo={todo}
-        updateTaskStatus={this.updateTaskStatus}
-        deleteTask={this.deleteTask}
-        key={todo.id}
-      />
-    ));
+  const items = todoList.map((todo) => (
+    <Todo
+      todo={todo}
+      updateTaskStatus={updateTaskStatus}
+      deleteTask={deleteTask}
+      key={todo.id}
+    />
+  ));
 
-    return (
-      <div>
-        <div className="todoBox">
-          <Heading updateHeading={this.updateHeading} value={heading} />
-          <Delete onDelete={this.deleteTodoList} />
-        </div>
-        {items}
-        <Input onSubmit={this.addTask} className="task" />
+  return (
+    <div>
+      <div className="todoBox">
+        <Heading updateHeading={updateHeading} value={heading} />
+        <Delete onDelete={deleteTodoList} />
       </div>
-    );
-  }
-}
+      {items}
+      <Input onSubmit={addTask} className="task" />
+    </div>
+  );
+};
 
 export default TodoList;
