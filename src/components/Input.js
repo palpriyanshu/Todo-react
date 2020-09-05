@@ -1,39 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-class Input extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { value: props.value };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const Input = (props) => {
+  const [value, setValue] = useState(props.value);
 
-  handleChange({ target }) {
-    this.setState({ value: target.value });
-  }
+  const handleChange = ({ target }) => {
+    setValue(target.value);
+  };
 
-  handleSubmit(event) {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    const value = this.state.value.trim();
-    if (value) {
-      this.props.onSubmit(value);
-      this.setState((state, props) => ({ value: props.value }));
+    const newValue = value.trim();
+    if (newValue) {
+      props.onSubmit(newValue);
+      setValue(props.value);
     }
-  }
+  };
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input
-          className={this.props.className}
-          type="text"
-          onChange={this.handleChange}
-          value={this.state.value}
-        />
-      </form>
-    );
-  }
-}
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        className={props.className}
+        type="text"
+        onChange={handleChange}
+        value={value}
+      />
+    </form>
+  );
+};
 
 Input.defaultProps = {
   value: '',
