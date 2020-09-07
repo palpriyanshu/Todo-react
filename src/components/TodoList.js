@@ -1,62 +1,61 @@
-import React, { useReducer } from 'react';
+import React, { useState } from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
 import Delete from './Delete';
-import { getDefaultStatus, getNextStatus } from '../todoStates';
+
+const fetchReq = (url, callback) => {
+  fetch(url)
+    .then((x) => x.json())
+    .then((state) => {
+      console.log(state, 'fetchReg');
+      callback(state);
+    });
+};
 
 const initialState = () => ({ heading: 'todo', todoList: [], lastId: 0 });
 
-const reducer = ({ heading, todoList, lastId }, newState) => {
-  switch (newState.action) {
-    case 'updateHeading':
-      return { heading: newState.heading, todoList, lastId };
-
-    case 'deleteTask':
-      return {
-        heading,
-        todoList: todoList.filter((todo) => todo.id !== newState.id),
-        lastId,
-      };
-
-    case 'deleteTodoList':
-      return initialState();
-
-    case 'updateTaskStatus':
-      const newTodoList = [...todoList];
-      const { task, id, status } = todoList[newState.id];
-      newTodoList[newState.id] = { task, id, status: getNextStatus(status) };
-      return { heading, todoList: newTodoList, lastId };
-
-    case 'addTask':
-      const todo = {
-        task: newState.task,
-        status: getDefaultStatus(),
-        id: lastId,
-      };
-      return { heading, todoList: [...todoList, todo], lastId: lastId + 1 };
-  }
-};
-
 const TodoList = (props) => {
-  const [value, dispatch] = useReducer(reducer, initialState());
+  const [state, setState] = useState(initialState());
 
   const deleteTodoList = () => {
-    dispatch({ action: 'deleteTodoList' });
+    fetchReq('http://localhost:3002/api/deleteTodoList', setState);
+  };
+
+  const deleteTask = (id) => {
+    fetchReq(`http://localhost:3002/api/deleteTask/${id}`, setState);
+  };
+
+  const updateHeading = (heading) => {
+    fetchReq(`http://localhost:3002/api/updateHeading/${heading}`, setState);
+  };
+
+  const updateTaskStatus = (id) => {
+    fetchReq(`http://localhost:3002/api/updateTaskStatus/${id}`, setState);
   };
 
   const addTask = (task) => {
-    dispatch({ action: 'addTask', task });
+    fetchReq(`http://localhost:3002/api/addTask/${task}`, setState);
   };
 
-  const items = value.todoList.map((todo) => (
-    <Todo todo={todo} dispatch={dispatch} key={todo.id} />
+  console.log(state, 'main');
+  if (!state) {
+    return <p>loading...</p>;
+  }
+
+  const items = state.todoList.map((todo) => (
+    <Todo
+      todo={todo}
+      deleteTask={deleteTask}
+      key={todo.id}
+      updateTaskStatus={updateTaskStatus}
+    />
   ));
 
   return (
     <div>
       <div className="todoBox">
-        <Heading dispatch={dispatch} value={value.heading} />
+        <Heading updateHeading={updateHeading} value={state.heading} />
         <Delete onDelete={deleteTodoList} />
       </div>
       {items}

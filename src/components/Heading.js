@@ -10,7 +10,7 @@ const Heading = (props) => {
 
   const submitHeading = (heading) => {
     toggleEditable();
-    props.dispatch({ action: 'updateHeading', heading });
+    props.updateHeading(heading);
   };
 
   const { value } = props;
