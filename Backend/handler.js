@@ -1,20 +1,17 @@
-const { getDefaultStatus, getNextStatus } = require('../todoStates.js');
+const { getDefaultStatus, getNextStatus } = require('./todoStates.js');
 
-const initialState = () => ({ heading: 'todo', todoList: [], lastId: 0 });
 let state;
 
 const initiateState = function (req, res) {
-  state = initialState();
-  res.send(
-    JSON.stringify({ heading: state.heading, todoList: state.todoList })
-  );
+  state = { heading: 'todo', todoList: [] };
+  res.send(JSON.stringify(state));
 };
 
 const addTask = function (req, res) {
-  const { todoList, lastId } = state;
-  const todo = { task: req.body.task, status: getDefaultStatus(), id: lastId };
+  const { todoList } = state;
+  const id = todoList.length ? todoList[todoList.length - 1].id + 1 : 0;
+  const todo = { task: req.body.task, status: getDefaultStatus(), id };
   state.todoList = [...todoList, todo];
-  state.lastId += 1;
   res.send(JSON.stringify(state.todoList));
 };
 
