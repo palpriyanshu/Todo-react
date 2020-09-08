@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Heading from './Heading';
 import Todo from './Todo.js';
 import Input from './Input.js';
@@ -7,38 +7,36 @@ import Delete from './Delete';
 const fetchReq = (url, callback) => {
   fetch(url)
     .then((x) => x.json())
-    .then((state) => {
-      console.log(state, 'fetchReg');
-      callback(state);
-    });
+    .then(callback);
 };
 
-const initialState = () => ({ heading: 'todo', todoList: [], lastId: 0 });
-
 const TodoList = (props) => {
-  const [state, setState] = useState(initialState());
+  const [state, setState] = useState(null);
+
+  useEffect(() => {
+    fetchReq('/api/initialState', setState);
+  }, []);
 
   const deleteTodoList = () => {
-    fetchReq('http://localhost:3002/api/deleteTodoList', setState);
+    fetchReq('/api/deleteTodoList', setState);
   };
 
   const deleteTask = (id) => {
-    fetchReq(`http://localhost:3002/api/deleteTask/${id}`, setState);
+    fetchReq(`/api/deleteTask/${id}`, setState);
   };
 
   const updateHeading = (heading) => {
-    fetchReq(`http://localhost:3002/api/updateHeading/${heading}`, setState);
+    fetchReq(`/api/updateHeading/${heading}`, setState);
   };
 
   const updateTaskStatus = (id) => {
-    fetchReq(`http://localhost:3002/api/updateTaskStatus/${id}`, setState);
+    fetchReq(`/api/updateTaskStatus/${id}`, setState);
   };
 
   const addTask = (task) => {
-    fetchReq(`http://localhost:3002/api/addTask/${task}`, setState);
+    fetchReq(`/api/addTask/${task}`, setState);
   };
 
-  console.log(state, 'main');
   if (!state) {
     return <p>loading...</p>;
   }
