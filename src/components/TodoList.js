@@ -4,7 +4,7 @@ import Todo from './Todo.js';
 import Input from './Input.js';
 import Delete from './Delete';
 
-import {fetchReq,optionsForPost,optionsForGet} from ('../reqFunctions.js')
+import { fetchReq, optionsForPost, optionsForGet } from '../reqFunctions.js';
 
 const TodoList = (props) => {
   const [state, setState] = useState(null);
