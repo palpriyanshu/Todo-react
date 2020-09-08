@@ -4,25 +4,7 @@ import Todo from './Todo.js';
 import Input from './Input.js';
 import Delete from './Delete';
 
-const fetchReq = (url, callback, options) => {
-  fetch(url, options)
-    .then((x) => x.json())
-    .then(callback);
-};
-
-const optionsForGet = () => {
-  return {
-    headers: { 'Content-Type': 'application/json' },
-  };
-};
-
-const optionsForPost = (content) => {
-  return {
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(content),
-    method: 'POST',
-  };
-};
+import {fetchReq,optionsForPost,optionsForGet} from ('../reqFunctions.js')
 
 const TodoList = (props) => {
   const [state, setState] = useState(null);
