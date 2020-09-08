@@ -5,7 +5,9 @@ let state;
 
 const initiateState = function (req, res) {
   state = initialState();
-  res.send(JSON.stringify(state));
+  res.send(
+    JSON.stringify({ heading: state.heading, todoList: state.todoList })
+  );
 };
 
 const addTask = function (req, res) {
@@ -14,13 +16,13 @@ const addTask = function (req, res) {
   const todo = { task, status: getDefaultStatus(), id: lastId };
   state.todoList = [...todoList, todo];
   state.lastId += 1;
-  res.send(JSON.stringify({ ...state }));
+  res.send(JSON.stringify(state.todoList));
 };
 
 const updateHeading = function (req, res) {
   const { heading } = req.body;
   state.heading = heading;
-  res.send(JSON.stringify({ ...state }));
+  res.send(JSON.stringify(heading));
 };
 
 const deleteTask = function (req, res) {
@@ -28,7 +30,7 @@ const deleteTask = function (req, res) {
   const id = Number(req.body.id);
   const list = todoList.filter((todo) => todo.id !== id);
   state.todoList = list;
-  res.send(JSON.stringify({ ...state }));
+  res.send(JSON.stringify(state.todoList));
 };
 
 const updateTaskStatus = function (req, res) {
@@ -38,7 +40,7 @@ const updateTaskStatus = function (req, res) {
   const { task, id, status } = todoList[taskId];
   newTodoList[taskId] = { task, id, status: getNextStatus(status) };
   state.todoList = newTodoList;
-  res.send(JSON.stringify({ ...state }));
+  res.send(JSON.stringify(state.todoList));
 };
 
 module.exports = {
