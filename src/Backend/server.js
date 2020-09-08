@@ -1,7 +1,11 @@
 const express = require('express');
-const { reducer, initialState } = require('./handler');
-
-let state;
+const {
+  initiateState,
+  addTask,
+  updateHeading,
+  deleteTask,
+  updateTaskStatus,
+} = require('./handler');
 
 const app = express();
 
@@ -10,41 +14,16 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/addTask/:task', (req, res) => {
-  state = reducer(state, { action: 'addTask', task: req.params.task });
-  res.send(JSON.stringify(state));
-});
+app.get('/api/addTask/:task', addTask);
 
-app.get('/api/initialState', (req, res) => {
-  state = initialState();
-  res.send(JSON.stringify(state));
-});
+app.get('/api/initialState', initiateState);
 
-app.get('/api/deleteTodoList', (req, res) => {
-  state = reducer(state, { action: 'deleteTodoList' });
-  res.send(JSON.stringify(state));
-});
+app.get('/api/deleteTodoList', initiateState);
 
-app.get('/api/updateHeading/:heading', (req, res) => {
-  const heading = req.params.heading.replace('%20', ' ');
-  state = reducer(state, { action: 'updateHeading', heading });
-  res.send(JSON.stringify(state));
-});
+app.get('/api/updateHeading/:heading', updateHeading);
 
-app.get('/api/deleteTask/:taskId', (req, res) => {
-  state = reducer(state, {
-    action: 'deleteTask',
-    id: Number(req.params.taskId),
-  });
-  res.send(JSON.stringify(state));
-});
+app.get('/api/deleteTask/:taskId', deleteTask);
 
-app.get('/api/updateTaskStatus/:taskId', (req, res) => {
-  state = reducer(state, {
-    action: 'updateTaskStatus',
-    id: Number(req.params.taskId),
-  });
-  res.send(JSON.stringify(state));
-});
+app.get('/api/updateTaskStatus/:taskId', updateTaskStatus);
 
 app.listen(3002, () => console.log('listening to 3002'));
