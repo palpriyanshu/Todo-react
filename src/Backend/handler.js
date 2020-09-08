@@ -12,34 +12,26 @@ const initiateState = function (req, res) {
 
 const addTask = function (req, res) {
   const { todoList, lastId } = state;
-  const { task } = req.body;
-  const todo = { task, status: getDefaultStatus(), id: lastId };
+  const todo = { task: req.body.task, status: getDefaultStatus(), id: lastId };
   state.todoList = [...todoList, todo];
   state.lastId += 1;
   res.send(JSON.stringify(state.todoList));
 };
 
 const updateHeading = function (req, res) {
-  const { heading } = req.body;
-  state.heading = heading;
-  res.send(JSON.stringify(heading));
+  state.heading = req.body.heading;
+  res.send(JSON.stringify(req.body.heading));
 };
 
 const deleteTask = function (req, res) {
   const { todoList } = state;
-  const id = Number(req.body.id);
-  const list = todoList.filter((todo) => todo.id !== id);
-  state.todoList = list;
+  state.todoList = todoList.filter((todo) => todo.id !== req.body.id);
   res.send(JSON.stringify(state.todoList));
 };
 
 const updateTaskStatus = function (req, res) {
-  const { todoList } = state;
-  const taskId = Number(req.body.id);
-  const newTodoList = [...todoList];
-  const { task, id, status } = todoList[taskId];
-  newTodoList[taskId] = { task, id, status: getNextStatus(status) };
-  state.todoList = newTodoList;
+  const todo = state.todoList.find((todo) => todo.id === req.body.id);
+  todo.status = getNextStatus(todo.status);
   res.send(JSON.stringify(state.todoList));
 };
 
