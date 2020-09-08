@@ -14,16 +14,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/addTask/:task', addTask);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/api/initialState', initiateState);
 
-app.get('/api/deleteTodoList', initiateState);
+app.post('/api/addTask', addTask);
 
-app.get('/api/updateHeading/:heading', updateHeading);
+app.post('/api/deleteTodoList', initiateState);
 
-app.get('/api/deleteTask/:taskId', deleteTask);
+app.post('/api/updateHeading', updateHeading);
 
-app.get('/api/updateTaskStatus/:taskId', updateTaskStatus);
+app.post('/api/deleteTask', deleteTask);
+
+app.post('/api/updateTaskStatus', updateTaskStatus);
 
 app.listen(3002, () => console.log('listening to 3002'));
