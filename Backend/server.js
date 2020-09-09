@@ -1,4 +1,7 @@
 const express = require('express');
+const redis = require('redis');
+const { Client } = require('./dataProvider.js');
+
 const {
   initiateState,
   addTask,
@@ -8,6 +11,13 @@ const {
 } = require('./handler');
 
 const app = express();
+
+const dsClient = redis.createClient({
+  url: 'redis://127.0.0.1:6379',
+  db: 1,
+});
+
+app.locals.client = new Client(dsClient);
 
 app.use((req, res, next) => {
   console.log(req.url, req.method);

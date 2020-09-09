@@ -1,34 +1,53 @@
 const { getDefaultStatus, getNextStatus } = require('./todoStates.js');
 
-let state;
+const LAST_TODO_ID = 'lastTodoId';
+const STATE = 'state';
+const DEFAULT_HEADING = 'todo';
 
-const initiateState = function (req, res) {
-  state = { heading: 'todo', todoList: [] };
+const initiateState = async function (req, res) {
+  const { client } = req.app.locals;
+  const state = { heading: DEFAULT_HEADING, todoList: [] };
+  await client.setValue(STATE, JSON.stringify(state));
   res.send(JSON.stringify(state));
 };
 
-const addTask = function (req, res) {
-  const { todoList } = state;
-  const id = todoList.length ? todoList[todoList.length - 1].id + 1 : 0;
+const addTask = async function (req, res) {
+  const { client } = req.app.locals;
+  const id = await client.incrID(LAST_TODO_ID);
   const todo = { task: req.body.task, status: getDefaultStatus(), id };
-  state.todoList = [...todoList, todo];
+  const string = await client.getValue(STATE);
+  const state = JSON.parse(string);
+  state.todoList.push(todo);
+  await client.setValue(STATE, JSON.stringify(state));
   res.send(JSON.stringify(state.todoList));
 };
 
-const updateHeading = function (req, res) {
+const updateHeading = async function (req, res) {
+  const { client } = req.app.locals;
+  const string = await client.getValue(STATE);
+  const state = JSON.parse(string);
   state.heading = req.body.heading;
+  await client.setValue(STATE, JSON.stringify(state));
   res.send(JSON.stringify(req.body.heading));
 };
 
-const deleteTask = function (req, res) {
-  const { todoList } = state;
-  state.todoList = todoList.filter((todo) => todo.id !== req.body.id);
+const deleteTask = async function (req, res) {
+  const { client } = req.app.locals;
+  const string = await client.getValue(STATE);
+  const state = JSON.parse(string);
+  state.todoList = state.todoList.filter((todo) => todo.id !== req.body.id);
+  await client.setValue(STATE, JSON.stringify(state));
   res.send(JSON.stringify(state.todoList));
 };
 
-const updateTaskStatus = function (req, res) {
-  const todo = state.todoList.find((todo) => todo.id === req.body.id);
+const updateTaskStatus = async function (req, res) {
+  const { client } = req.app.locals;
+  const string = await client.getValue(STATE);
+  const state = JSON.parse(string);
+  const index = state.todoList.findIndex((todo) => todo.id === req.body.id);
+  const todo = state.todoList[index];
   todo.status = getNextStatus(todo.status);
+  await client.setValue(STATE, JSON.stringify(state));
   res.send(JSON.stringify(state.todoList));
 };
 
