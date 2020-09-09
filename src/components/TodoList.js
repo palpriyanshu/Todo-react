@@ -4,49 +4,37 @@ import Todo from './Todo.js';
 import Input from './Input.js';
 import withDelete from './hocWithDelete';
 
-import { fetchReq, optionsForPost, optionsForGet } from '../reqFunctions.js';
+import { fetchApis } from '../fetchApis.js';
 
 const HeaderWithDelete = withDelete(Heading);
 const TodoWithDelete = withDelete(Todo);
 
 const TodoList = (props) => {
-  const [todoList, setTodoList] = useState(null);
-  const [heading, setHeading] = useState(null);
-
-  const callback = (state) => {
-    setTodoList(state.todoList);
-    setHeading(state.heading);
-  };
+  const [state, setState] = useState(null);
 
   useEffect(() => {
-    fetchReq('/api/initialState', callback, optionsForGet());
+    fetchApis.initiateState().then(setState);
   }, []);
 
-  const deleteTodoList = () => {
-    fetchReq('/api/deleteTodoList', callback, optionsForPost());
-  };
+  const updateState = () => fetchApis.currentStatus().then(setState);
 
-  const deleteTask = (id) => {
-    fetchReq('/api/deleteTask', setTodoList, optionsForPost({ id }));
-  };
+  const deleteTodoList = () => fetchApis.deleteTodoList().then(updateState);
 
-  const updateHeading = (heading) => {
-    fetchReq('/api/updateHeading', setHeading, optionsForPost({ heading }));
-  };
+  const deleteTask = (id) => fetchApis.deleteTask(id).then(updateState);
 
-  const updateTaskStatus = (id) => {
-    fetchReq('/api/updateTaskStatus', setTodoList, optionsForPost({ id }));
-  };
+  const updateHeading = (heading) =>
+    fetchApis.updateHeading(heading).then(updateState);
 
-  const addTask = (task) => {
-    fetchReq('/api/addTask', setTodoList, optionsForPost({ task }));
-  };
+  const updateTaskStatus = (id) =>
+    fetchApis.updateTaskStatus(id).then(updateState);
 
-  if (!(todoList && heading)) {
+  const addTask = (task) => fetchApis.addTask(task).then(updateState);
+
+  if (!state) {
     return <p>loading...</p>;
   }
 
-  const items = todoList.map(({ task, id, status }) => (
+  const items = state.todoList.map(({ task, id, status }) => (
     <TodoWithDelete
       task={task}
       id={id}
@@ -62,7 +50,7 @@ const TodoList = (props) => {
       <HeaderWithDelete
         onDelete={deleteTodoList}
         updateHeading={updateHeading}
-        value={heading}
+        value={state.heading}
       />
       {items}
       <Input onSubmit={addTask} className="task" />

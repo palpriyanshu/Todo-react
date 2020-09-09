@@ -11,6 +11,12 @@ const initiateState = async function (req, res) {
   res.send(JSON.stringify(state));
 };
 
+const getCurrentState = async function (req, res) {
+  const { client } = req.app.locals;
+  const state = await client.getValue(STATE);
+  res.send(state);
+};
+
 const addTask = async function (req, res) {
   const { client } = req.app.locals;
   const id = await client.incrID(LAST_TODO_ID);
@@ -19,7 +25,7 @@ const addTask = async function (req, res) {
   const state = JSON.parse(string);
   state.todoList.push(todo);
   await client.setValue(STATE, JSON.stringify(state));
-  res.send(JSON.stringify(state.todoList));
+  res.end();
 };
 
 const updateHeading = async function (req, res) {
@@ -28,7 +34,7 @@ const updateHeading = async function (req, res) {
   const state = JSON.parse(string);
   state.heading = req.body.heading;
   await client.setValue(STATE, JSON.stringify(state));
-  res.send(JSON.stringify(req.body.heading));
+  res.end();
 };
 
 const deleteTask = async function (req, res) {
@@ -37,7 +43,7 @@ const deleteTask = async function (req, res) {
   const state = JSON.parse(string);
   state.todoList = state.todoList.filter((todo) => todo.id !== req.body.id);
   await client.setValue(STATE, JSON.stringify(state));
-  res.send(JSON.stringify(state.todoList));
+  res.end();
 };
 
 const updateTaskStatus = async function (req, res) {
@@ -48,11 +54,12 @@ const updateTaskStatus = async function (req, res) {
   const todo = state.todoList[index];
   todo.status = getNextStatus(todo.status);
   await client.setValue(STATE, JSON.stringify(state));
-  res.send(JSON.stringify(state.todoList));
+  res.end();
 };
 
 module.exports = {
   initiateState,
+  getCurrentState,
   addTask,
   updateHeading,
   deleteTask,
